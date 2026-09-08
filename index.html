@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Surgery MCQs</title>
+  <style>
+    :root {
+      --bg: #f2f2f7;
+      --card-bg: #ffffff;
+      --text: #1c1c1e;
+      --accent: #007aff;
+      --correct-bg: #d4edda;
+      --correct-border: #28a745;
+      --incorrect-bg: #f8d7da;
+      --incorrect-border: #dc3545;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      background-color: var(--card-bg);
+      padding: 12px 16px;
+      border-bottom: 1px solid #e5e5ea;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .progress-bar {
+      height: 4px;
+      background: #e5e5ea;
+      width: 140px;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.3s;
+    }
+    main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+    .question-card {
+      background: var(--card-bg);
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
+    }
+    .question-title {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    .option-btn {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #e5e5ea;
+      border-radius: 8px;
+      background: #f9f9f9;
+      text-align: left;
+      font-size: 14px;
+      cursor: pointer;
+      box-sizing: border-box;
+      color: var(--text);
+    }
+    .option-btn.correct {
+      background-color: var(--correct-bg);
+      border-color: var(--correct-border);
+      font-weight: bold;
+    }
+    .option-btn.incorrect {
+      background-color: var(--incorrect-bg);
+      border-color: var(--incorrect-border);
+    }
+    .explanation-box {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+      display: none;
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+    }
+    .explanation-box.show {
+      display: block;
+    }
+    footer {
+      background: var(--card-bg);
+      padding: 12px 16px;
+      border-top: 1px solid #e5e5ea;
+      display: flex;
+      justify-content: space-between;
+    }
+    .nav-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .nav-btn:disabled {
+      background: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div id="q-number" style="font-size: 12px; color: #8e8e93; font-weight: bold;">Question 1 of 90</div>
+      <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    </div>
+    <div id="score-display" style="font-weight: bold; color: var(--accent);">Score: 0 / 90</div>
+  </header>
+
+  <main>
+    <div class="question-card">
+      <div class="question-title" id="q-text">Loading question...</div>
+      <div id="options-container"></div>
+      <div class="explanation-box" id="explanation"></div>
+    </div>
+  </main>
+
+  <footer>
+    <button class="nav-btn" id="prev-btn" onclick="prevQuestion()" disabled>Previous</button>
+    <button class="nav-btn" id="next-btn" onclick="nextQuestion()">Next</button>
+  </footer>
+
+  <script>
+    const questions = [
+      {
+        id: 1,
+        text: "1. Which of the following radiological features is specific for a patient with ruptured diaphragm?",
+        options: ["A. Loss of the splenic outline on coned views", "B. Loss of the psoas shadow", "C. Elevation of the left cupola of the diaphragm", "D. Collar sign", "E. Colon cutoff sign"],
+        correct: 3,
+        explanation: "Collar Sign (or 'hourglass sign') on CT scan or radiograph is characteristic of traumatic diaphragmatic rupture."
+      },
+      {
+        id: 2,
+        text: "2. A man of 35 years old was involved in an R.T.A. presented with severe upper abdominal pain and dyspnoea but without haematuria. Tender in left hypochondrium. Most likely diagnosis:",
+        options: ["A. Ruptured right kidney", "B. Grade I splenic injury", "C. Small bowel perforation", "D. Haemothorax (left)", "E. Ruptured spleen"],
+        correct: 4,
+        explanation: "Blunt left upper quadrant abdominal trauma following an RTA with severe localized pain points directly to splenic injury/rupture."
+      },
+      {
+        id: 3,
+        text: "3. The following are differentials for achalasia EXCEPT",
+        options: ["A. Oesophageal stricture or webs", "B. Gastro-Oesophageal Reflux Disease", "C. Plummer Vinson Syndrome", "D. Zenker's diverticulum", "E. Barrett's Oesophagus"],
+        correct: 4,
+        explanation: "Barrett's oesophagus is a chronic complications of severe GORD, not a differential diagnosis for esophageal dysmotility."
+      },
+      {
+        id: 4,
+        text: "4. The following is TRUE about oesophageal cancer",
+        options: ["A. Approximately 70% are treated palliatively", "B. Dysphagia is first to liquids", "C. Incidence is higher in women than men", "D. 'Bird-beak' appearance on barium swallow is diagnostic", "E. Adenocarcinoma is more common in developing countries"],
+        correct: 0,
+        explanation: "Because esophageal cancer presents late, approximately 70% of patients are suitable only for palliative treatment."
+      },
+      {
+        id: 5,
+        text: "5. Clinical features of mechanical bowel obstruction include all the following EXCEPT:",
+        options: ["A. Cramp-like central abdominal pain with profuse vomiting", "B. Absolute constipation", "C. Increasing tender abdominal distension", "D. Absent bowel sounds", "E. Visible peristalsis"],
+        correct: 3,
+        explanation: "In mechanical bowel obstruction, bowel sounds are hyperactive/tinkling. Absent bowel sounds indicate paralytic ileus or peritonitis."
+      }
+      // Expandable with all remaining questions
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    let answered = {};
+
+    function renderQuestion() {
+      const q = questions[currentIndex];
+      document.getElementById('q-number').innerText = `Question ${currentIndex + 1} of ${questions.length}`;
+      document.getElementById('progress').style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
+      document.getElementById('q-text').innerText = q.text;
+
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = opt;
+
+        if (answered[currentIndex] !== undefined) {
+          btn.disabled = true;
+          if (idx === q.correct) btn.classList.add('correct');
+          if (idx === answered[currentIndex] && idx !== q.correct) btn.classList.add('incorrect');
+        } else {
+          btn.onclick = () => selectOption(idx);
+        }
+        container.appendChild(btn);
+      });
+
+      const expBox = document.getElementById('explanation');
+      if (answered[currentIndex] !== undefined) {
+        expBox.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+        expBox.classList.add('show');
+      } else {
+        expBox.classList.remove('show');
+      }
+
+      document.getElementById('prev-btn').disabled = currentIndex === 0;
+      document.getElementById('next-btn').disabled = currentIndex === questions.length - 1;
+    }
+
+    function selectOption(index) {
+      const q = questions[currentIndex];
+      answered[currentIndex] = index;
+      if (index === q.correct) score++;
+      document.getElementById('score-display').innerText = `Score: ${score} / ${questions.length}`;
+      renderQuestion();
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      }
+    }
+
+    renderQuestion();
+  </script>
+</body>
+</html>
